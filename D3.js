@@ -55,8 +55,8 @@ fetch(myLink)
         </div>
         `;
 
-        myList.push(newLi.innerText);
-        localStorage.setItem(myKey, myList);
+        myList.push(newLi.innerHTML);
+        localStorage.setItem(myKey, JSON.stringify(myList));
         const removeLiBtn = document.querySelectorAll(".remove");
         for (let i = 0; i < removeLiBtn.length; i++) {
           removeLiBtn[i].addEventListener("click", (e) => {
@@ -68,9 +68,22 @@ fetch(myLink)
       });
     }
     const load = () => {
-      const localSave = localStorage.getItem(myKey);
-
-      console.log(localSave);
+      let storedList = JSON.parse(localStorage.getItem(myKey));
+      for (let i = 0; i < storedList.length; i++) {
+        const newLiLi = document.createElement("li");
+        newLiLi.classList.add("text-black");
+        newLiLi.innerHTML = storedList[i];
+        list.appendChild(newLiLi);
+        newLiLi.classList.add("list-group-item");
+        const removeLiBtn = document.querySelectorAll(".remove");
+        for (let i = 0; i < removeLiBtn.length; i++) {
+          removeLiBtn[i].addEventListener("click", (e) => {
+            e.target.parentElement.parentElement.parentElement.classList.add(
+              "d-none"
+            );
+          });
+        }
+      }
     };
     load();
   })
